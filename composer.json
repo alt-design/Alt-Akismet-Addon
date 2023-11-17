@@ -1,0 +1,19 @@
+{
+    "name": "alt-design/alt-akismet",
+    "autoload": {
+        "psr-4": {
+            "AltDesign\\AltAkismet\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Alt Akismet",
+            "description": "Alt Akismet addon"
+        },
+        "laravel": {
+            "providers": [
+                "AltDesign\\AltAkismet\\ServiceProvider"
+            ]
+        }
+    }
+}
