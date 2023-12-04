@@ -2,11 +2,13 @@
 
 namespace AltDesign\AltAkismet;
 
-use AltDesign\AltAkismet\Events\AltFormSubmitted;
 use Illuminate\Support\Facades\Event;
-use Statamic\Facades\Permission;
+
 use Statamic\Providers\AddonServiceProvider;
+
 use Statamic\Facades\CP\Nav;
+use Statamic\Facades\Permission;
+use AltDesign\AltAkismet\Events\AltFormSubmitted;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -32,7 +34,6 @@ class ServiceProvider extends AddonServiceProvider
     public function registerEvents()
     {
         Event::subscribe(AltFormSubmitted::class);
-
     }
 
     public function addToNav()
@@ -48,6 +49,10 @@ class ServiceProvider extends AddonServiceProvider
 
     // Authenticates your Akismet API key
     function akismet_verify_key( $key ) {
+        if(!isset($_SERVER['HTTP_HOST'])) {
+            return false;
+        }
+
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'];
         $blog = urlencode($baseUrl);
