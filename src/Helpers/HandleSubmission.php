@@ -1,7 +1,6 @@
 <?php namespace AltDesign\AltAkismet\Helpers;
 
 use Illuminate\Support\Facades\File;
-use Statamic\Facades\YAML;
 use Statamic\Filesystem\Manager;
 
 class HandleSubmission
