@@ -159,9 +159,7 @@ class AltFormSubmitted
             '&comment_type=' . urlencode($data['comment_type']) .
             '&comment_author=' . urlencode($data['comment_author']) .
             '&comment_author_email=' . urlencode($data['comment_author_email']) .
-            '&comment_content=' . urlencode($data['comment_content']) .
-            '&is_test=1';
-
+            '&comment_content=' . urlencode($data['comment_content']);
         $host = $http_host = 'rest.akismet.com';
         $path = '/1.1/comment-check';
         $port = 443;
