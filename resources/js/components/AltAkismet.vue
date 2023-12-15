@@ -171,9 +171,12 @@ export default({
                     id: id,
                     type: type,
                 }).then(res => {
+                    window.location.reload()
                     this.updateItems(res)
+                    console.log('reloading')
                 })
                     .catch(err => {
+                        console.log('Ooo')
                         console.log(err)
                     })
             }
