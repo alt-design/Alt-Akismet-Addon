@@ -6,12 +6,12 @@ use AltDesign\AltAkismet\Helpers\HandleSubmission;
 class AltFormSubmitted
 {
     protected $events = [
-        Events\SubmissionSaved::class => 'commentCheck',
+        Events\FormSubmitted::class => 'commentCheck',
     ];
 
     public function subscribe($events)
     {
-        $events->listen(Events\SubmissionSaved::class, self::class . '@' . 'commentCheck');
+        $events->listen(Events\FormSubmitted::class, self::class . '@' . 'commentCheck');
     }
 
     /**
@@ -140,7 +140,12 @@ class AltFormSubmitted
             'comment_author_email' => $this->attemptGetEmail($data),
             'comment_content' => $this->attemptGetContent($data, $event->submission->form()->fields()),
         );
-        $this->akismet_comment_check(env("ALT_AKISMET_API_KEY"), $data, $submission);
+        // Todo, check the returns here, for some reason they didn't seem to behave when returning true/false from the function??
+        if($this->akismet_comment_check(env("ALT_AKISMET_API_KEY"), $data, $submission)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function akismet_comment_check($api_key, $data, $submission)
@@ -190,16 +195,16 @@ class AltFormSubmitted
         $submission->alt_akismet_name = $data['comment_author'];
         $submission->alt_akismet_email = $data['comment_author_email'];
         $submission->alt_akismet_content = $data['comment_content'];
-
-        // Save the submission.
-        $submission->saveQuietly();
+        $submission->alt_form_slug = $submission->form()->handle();
 
         //need to move this to when form is saved - TODO
         $formSubmission = new HandleSubmission();
         if ($submission->alt_akismet == "ham") {
             $formSubmission->moveSubmissionToAltAkismet($submission, "ham");
+            return true;
         } else {
             $formSubmission->moveSubmissionToAltAkismet($submission, "spam");
+            return false; // Should disable notifs etc?
         }
     }
 }

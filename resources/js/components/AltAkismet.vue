@@ -8,7 +8,12 @@
         :values="values"
     ></publish-form>
 
+    <p class="mb-6 -mt-2 text-sm">
+        We basically try and guess which fields are which, so that you don't have to manually config each field. Below are the contents of the fields that we guessed, and the ham or spam result - we'll add a way of customising them too soon!
+    </p>
+
     <div class="card overflow-hidden p-0">
+
         <table data-size="sm" tabindex="0" class="data-table">
             <thead>
             <tr>
@@ -20,6 +25,12 @@
                 </th>
                 <th class="group to-column pr-8">
                     <span>Content</span>
+                </th>
+                <th class="group from-column sortable-column">
+                    <span>Form</span>
+                </th>
+                <th class="group from-column sortable-column">
+                    <span>Submission</span>
                 </th>
                 <th class="actions-column">
                 </th>
@@ -35,6 +46,12 @@
                 </td>
                 <td>
                     {{ item.alt_akismet_content }}
+                </td>
+                <td>
+                    <a class="text-blue-400 underline" :href="cp_url('forms/' + item.alt_form_slug)">{{ item.alt_form_slug }}</a>
+                </td>
+                <td>
+                    <a class="text-blue-400 underline" :href="cp_url('forms/' + item.alt_form_slug + '/submissions/' + item.alt_akismet_id)">View</a>
                 </td>
                 <td>
                     <button v-if="item.alt_akismet == 'ham'" @click="update(item.id, 'spam')" class="btn" style="color: red;">Report Spam </button>

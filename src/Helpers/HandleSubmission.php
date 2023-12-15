@@ -1,6 +1,6 @@
 <?php namespace AltDesign\AltAkismet\Helpers;
 
-use Illuminate\Support\Facades\File;
+use Statamic\Facades\YAML;
 use Statamic\Filesystem\Manager;
 
 class HandleSubmission
@@ -11,30 +11,17 @@ class HandleSubmission
         // New up Stat File Manager
         $this->manager = new Manager();
 
-        // Check redirect folder exists
+        // Check Akismet folder exists
         if (!$this->manager->disk()->exists('content/alt-akismet')) {
             $this->manager->disk()->makeDirectory('content/alt-akismet');
         }
     }
 
-    // this is running too soon, needs to be after save
+    // Create our own version of the submission
     public static function moveSubmissionToAltAkismet($submission, $type)
     {
-        $handle = $submission->form->handle();
-        $sourcePath = storage_path('/forms/'.$handle);
-        $destinationPath = base_path('/content/alt-akismet/');
-
-        $files = File::allFiles($sourcePath);
-        usort($files, function ($a, $b) {
-            return filemtime($b) - filemtime($a);
-        });
-        $latestFile = reset($files);
-
-        $filename = pathinfo($latestFile, PATHINFO_FILENAME);
-        $destinationFile = $destinationPath . $filename . '.yaml';
-        // delete from storage if spam ---- need to wait until it's saved to delete ???
-        File::copy($latestFile, $destinationFile);
-
+        $manager = new Manager();
+        $manager->disk()->put('content/alt-akismet/'.$submission->id().'.yaml', Yaml::dump($submission->data()->toArray()));
     }
 
     public static function updateSubmissionInAltAkismet($id, $type)
