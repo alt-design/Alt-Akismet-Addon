@@ -32,6 +32,7 @@ class Data
         // Loop through and get the Data
         foreach ($allSubmissions as $submission) {;
             $data = Yaml::parse(File::get($submission));
+            $data['alt_akismet_id'] = str_replace('.yaml', '', basename($submission));
             $this->data[] = $data;
         }
     }

@@ -1,49 +1,49 @@
 <?php namespace AltDesign\AltAkismet\Helpers;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Statamic\Facades\File;
 use Statamic\Facades\YAML;
 use Statamic\Filesystem\Manager;
 
 class HandleSubmission
 {
-
     public $manager;
 
     public function __construct(){
         // New up Stat File Manager
         $this->manager = new Manager();
 
-        // Check redirect folder exists
+        // Check Akismet folder exists
         if (!$this->manager->disk()->exists('content/alt-akismet')) {
             $this->manager->disk()->makeDirectory('content/alt-akismet');
         }
     }
 
-    // this is running too soon, needs to be after save
+    // Create our own version of the submission
     public static function moveSubmissionToAltAkismet($submission, $type)
     {
-        $handle = $submission->form->handle();
-        $sourcePath = storage_path('/forms/'.$handle);
-        $destinationPath = base_path('/content/alt-akismet/');
-
-        $files = File::allFiles($sourcePath);
-        usort($files, function ($a, $b) {
-            return filemtime($b) - filemtime($a);
-        });
-        $latestFile = reset($files);
-
-        $filename = pathinfo($latestFile, PATHINFO_FILENAME);
-        $destinationFile = $destinationPath . $filename . '.yaml';
-        // delete from storage if spam ---- need to wait until it's saved to delete ???
-        File::copy($latestFile, $destinationFile);
-
+        $manager = new Manager();
+        $manager->disk()->put('content/alt-akismet/'.$submission->id().'.yaml', Yaml::dump($submission->data()->toArray()));
     }
 
     public static function updateSubmissionInAltAkismet($id, $type)
     {
         // update the type in the submission
-        // send report to akismet - TODO
-        // add or remove from form submission - TODO
+        $manager = new Manager();
+        $submission = $manager->disk()->get('content/alt-akismet/'.$id.'.yaml'); // We'll always have this one
+        $submission = Yaml::parse($submission);
+        $submission['alt_akismet'] = $type;
+        $manager->disk()->put('content/alt-akismet/'.$id.'.yaml', Yaml::dump($submission));
+
+        // send report to akismet - TODO, they can wait for now :)
+
+        // If we're marking spam - remove the real submission from the forms
+        if($type == 'spam') {
+            unlink(storage_path('/forms/'.$submission['alt_form_slug'].'/'.$id.'.yaml'));
+        } else {
+            // If we're marking ham - add the real submission back to the forms
+            File::copy(base_path('/content/alt-akismet/'.$id.'.yaml'), storage_path('/forms/'.$submission['alt_form_slug'].'/'.$id.'.yaml'));
+        }
     }
 }
 

@@ -1,14 +1,12 @@
 # Alt Akismet
 
-> Alt Akismet is a Statamic addon that does something pretty neat.
+> Akismet Integration for Statamic!
 
 ## Features
 
-This addon does:
+This addon lets you integrate Akismet into your Statamic forms. We've tried to put some guesswork into working out which fields are which to try and minimise the amount of config required on forms.
 
-- This
-- And this
-- And even this
+Mark your entries as spam or ham - notifications etc won't come through if marked as spam.
 
 ## How to Install
 
@@ -20,4 +18,4 @@ composer require alt-design/alt-akismet
 
 ## How to Use
 
-Here's where you can explain how to use this wonderful addon.
+Once you've got this puppy installed, add `ALT_AKISMET_API_KEY` to your `.env` file, pop your key in, off you go!
