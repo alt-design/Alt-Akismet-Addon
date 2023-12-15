@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use AltDesign\AltAkismet\Helpers\Data;
 use AltDesign\AltAkismet\Helpers\HandleSubmission;
 use Statamic\Facades\Blueprint;
+use Statamic\Facades\File;
+use Statamic\Facades\YAML;
 
 /**
  * Class AltAkismetController
@@ -43,12 +45,12 @@ class AltAkismetController {
         ]);
     }
 
-    public function submission()
+    public function submission($submission)
     {
         // Publish form
         // Get an array of values
-        $data = new \AltDesign\AltAkismet\Helpers\Data('akismet');
-        $values = $data->all();
+        $data = YAML::parse(File::get(base_path('content/alt-akismet/'.$submission . '.yaml')));
+        $values = $data;
 
         // Get a blueprint.
         $blueprint = Blueprint::setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
