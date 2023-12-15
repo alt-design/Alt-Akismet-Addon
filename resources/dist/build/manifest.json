@@ -1,0 +1,12 @@
+{
+  "resources/css/alt-akismet-addon.css": {
+    "file": "assets/alt-akismet-addon-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/css/alt-akismet-addon.css"
+  },
+  "resources/js/alt-akismet-addon.js": {
+    "file": "assets/alt-akismet-addon-c3b060e8.js",
+    "isEntry": true,
+    "src": "resources/js/alt-akismet-addon.js"
+  }
+}
