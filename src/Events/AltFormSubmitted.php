@@ -3,16 +3,15 @@
 use Statamic\Events;
 use AltDesign\AltAkismet\Helpers\HandleSubmission;
 
-
 class AltFormSubmitted
 {
     protected $events = [
-        Events\FormSubmitted::class => 'commentCheck',
+        Events\SubmissionSaved::class => 'commentCheck',
     ];
 
     public function subscribe($events)
     {
-        $events->listen(Events\FormSubmitted::class, self::class . '@' . 'commentCheck');
+        $events->listen(Events\SubmissionSaved::class, self::class . '@' . 'commentCheck');
     }
 
     /**
@@ -184,20 +183,23 @@ class AltFormSubmitted
         //add an ID
         $submission->id = uniqid();
 
-        //add the comment check result
-        if ('true' == $response[1]) {
-            $submission->alt_akismet = "spam";
-        } else {
-            $submission->alt_akismet = "ham";
-        }
+        //add the comment check result.
+        $submission->alt_akismet = $response[1] == "true" ? "spam" : "ham";
+
+        // Add what we assumed the name, email and content to be, as this is what we checked.
+        $submission->alt_akismet_name = $data['comment_author'];
+        $submission->alt_akismet_email = $data['comment_author_email'];
+        $submission->alt_akismet_content = $data['comment_content'];
+
+        // Save the submission.
+        $submission->saveQuietly();
 
         //need to move this to when form is saved - TODO
-        /*$data = $submission->data();
         $formSubmission = new HandleSubmission();
-        if ($data['alt_akismet'] == "ham") {
+        if ($submission->alt_akismet == "ham") {
             $formSubmission->moveSubmissionToAltAkismet($submission, "ham");
         } else {
             $formSubmission->moveSubmissionToAltAkismet($submission, "spam");
-        }*/
+        }
     }
 }

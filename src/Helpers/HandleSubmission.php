@@ -6,7 +6,6 @@ use Statamic\Filesystem\Manager;
 
 class HandleSubmission
 {
-
     public $manager;
 
     public function __construct(){

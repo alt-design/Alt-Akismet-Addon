@@ -1,5 +1,58 @@
-<script>
+<template>
+    <div id="alt-akismet">
 
+    <publish-form
+        :title="title"
+        :action="action"
+        :meta="meta"
+        :values="values"
+    ></publish-form>
+
+    <div class="card overflow-hidden p-0">
+        <table data-size="sm" tabindex="0" class="data-table">
+            <thead>
+            <tr>
+                <th class="group from-column sortable-column">
+                    <span>Name</span>
+                </th>
+                <th class="group to-column pr-8">
+                    <span>Email</span>
+                </th>
+                <th class="group to-column pr-8">
+                    <span>Content</span>
+                </th>
+                <th class="actions-column">
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in itemsSliced" :key="item.id">
+                <td>
+                    {{ item.alt_akismet_name }}
+                </td>
+                <td>
+                    {{ item.alt_akismet_email }}
+                </td>
+                <td>
+                    {{ item.alt_akismet_content }}
+                </td>
+                <td>
+                    <button v-if="item.alt_akismet == 'ham'" @click="update(item.id, 'spam')" class="btn" style="color: red;">Report Spam </button>
+                    <button v-else @click="update(item.id, 'ham')" class="btn" style="color: green;">Report Ham</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination py-2">
+            <!-- Generate numbers based on total left -->
+            <span class="cursor-pointer py-1 px-2 border mx-1" :class="{'font-bold': n == currentPage}" v-for="n in Math.ceil(totalItems / perPage)" :key="n" @click="setPage(n)">{{ n }}</span>
+        </div>
+    </div>
+    </div>
+</template>
+
+<script>
 export default({
     props: {
         title: String,
@@ -52,68 +105,11 @@ export default({
                 }).then(res => {
                     this.updateItems(res)
                 })
-                .catch(err => {
-                    console.log(err)
-                })
+                    .catch(err => {
+                        console.log(err)
+                    })
             }
         },
     }
 })
 </script>
-
-<template>
-    <div id="alt-akismet">
-
-    <publish-form
-        :title="title"
-        :action="action"
-        :meta="meta"
-        :values="values"
-    ></publish-form>
-
-    <div class="card overflow-hidden p-0">
-        <table data-size="sm" tabindex="0" class="data-table">
-            <thead>
-            <tr>
-                <th class="group from-column sortable-column">
-                    <span>Name</span>
-                </th>
-                <th class="group to-column pr-8">
-                    <span>Email</span>
-                </th>
-                <th class="group to-column pr-8">
-                    <span>Content</span>
-                </th>
-                <th class="actions-column">
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="item in itemsSliced" :key="item.id">
-                <td>
-                    {{ item.email }}
-                </td>
-                <td>
-                    {{ item.name }}
-                </td>
-                <td>
-                    {{ item.content }}
-                </td>
-                <td>
-                    <button v-if="item.alt_akismet == 'ham'" @click="update(item.id, 'spam')" class="btn" style="color: red;">Report Spam </button>
-                    <button v-else @click="update(item.id, 'ham')" class="btn" style="color: green;">Report Ham</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <div class="pagination py-2">
-            <!-- Generate numbers based on total left -->
-            <span class="cursor-pointer py-1 px-2 border mx-1" :class="{'font-bold': n == currentPage}" v-for="n in Math.ceil(totalItems / perPage)" :key="n" @click="setPage(n)">{{ n }}</span>
-        </div>
-    </div>
-    </div>
-</template>
-
-<style scoped>
-</style>
