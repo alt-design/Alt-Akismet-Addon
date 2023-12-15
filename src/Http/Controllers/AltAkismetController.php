@@ -20,7 +20,7 @@ class AltAkismetController {
      */
     public function index()
     {
-        //Publish form
+        // Publish form
         // Get an array of values
         $data = new \AltDesign\AltAkismet\Helpers\Data('akismet');
         $values = $data->all();
@@ -36,6 +36,31 @@ class AltAkismetController {
         $fields = $fields->preProcess();
 
         return view('alt-akismet::index', [
+            'blueprint' => $blueprint->toPublishArray(),
+            'values'    => $fields->values(),
+            'meta'      => $fields->meta(),
+            'data'      => $values,
+        ]);
+    }
+
+    public function submission()
+    {
+        // Publish form
+        // Get an array of values
+        $data = new \AltDesign\AltAkismet\Helpers\Data('akismet');
+        $values = $data->all();
+
+        // Get a blueprint.
+        $blueprint = Blueprint::setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
+
+        // Get a Fields object
+        $fields = $blueprint->fields();
+        // Add the values to the object
+        $fields = $fields->addValues($values);
+        // Pre-process the values.
+        $fields = $fields->preProcess();
+
+        return view('alt-akismet::submission', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),

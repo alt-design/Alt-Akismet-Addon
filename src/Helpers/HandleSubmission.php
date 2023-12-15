@@ -1,5 +1,7 @@
 <?php namespace AltDesign\AltAkismet\Helpers;
 
+use Illuminate\Support\Facades\Storage;
+use Statamic\Facades\File;
 use Statamic\Facades\YAML;
 use Statamic\Filesystem\Manager;
 
@@ -27,8 +29,21 @@ class HandleSubmission
     public static function updateSubmissionInAltAkismet($id, $type)
     {
         // update the type in the submission
-        // send report to akismet - TODO
-        // add or remove from form submission - TODO
+        $manager = new Manager();
+        $submission = $manager->disk()->get('content/alt-akismet/'.$id.'.yaml'); // We'll always have this one
+        $submission = Yaml::parse($submission);
+        $submission['alt_akismet'] = $type;
+        $manager->disk()->put('content/alt-akismet/'.$id.'.yaml', Yaml::dump($submission));
+
+        // send report to akismet - TODO, they can wait for now :)
+
+        // If we're marking spam - remove the real submission from the forms
+        if($type == 'spam') {
+            unlink(storage_path('/forms/'.$submission['alt_form_slug'].'/'.$id.'.yaml'));
+        } else {
+            // If we're marking ham - add the real submission back to the forms
+            File::copy(base_path('/content/alt-akismet/'.$id.'.yaml'), storage_path('/forms/'.$submission['alt_form_slug'].'/'.$id.'.yaml'));
+        }
     }
 }
 

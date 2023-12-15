@@ -51,11 +51,12 @@
                     <a class="text-blue-400 underline" :href="cp_url('forms/' + item.alt_form_slug)">{{ item.alt_form_slug }}</a>
                 </td>
                 <td>
-                    <a class="text-blue-400 underline" :href="cp_url('forms/' + item.alt_form_slug + '/submissions/' + item.alt_akismet_id)">View</a>
+                    <a v-if="item.alt_akismet == 'ham'" class="text-blue-400 underline" :href="cp_url('forms/' + item.alt_form_slug + '/submissions/' + item.alt_akismet_id)">View</a>
+                    <a v-else class="text-blue-400 underline" :href="cp_url('alt-design/alt-akismet/submissions/' + item.alt_akismet_id)">View</a>
                 </td>
                 <td>
-                    <button v-if="item.alt_akismet == 'ham'" @click="update(item.id, 'spam')" class="btn" style="color: red;">Report Spam </button>
-                    <button v-else @click="update(item.id, 'ham')" class="btn" style="color: green;">Report Ham</button>
+                    <button v-if="item.alt_akismet == 'ham'" @click="update(item.alt_akismet_id, 'spam')" class="btn" style="color: red;">Report Spam </button>
+                    <button v-else @click="update(item.alt_akismet_id, 'ham')" class="btn" style="color: green;">Report Ham</button>
                 </td>
             </tr>
             </tbody>
