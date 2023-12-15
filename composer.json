@@ -1,5 +1,7 @@
 {
     "name": "alt-design/alt-akismet",
+    "description": "Alt Akismet addon, integrates Akismet into your Statamic site.",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "AltDesign\\AltAkismet\\": "src"
