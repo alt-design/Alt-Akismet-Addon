@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use AltDesign\AltAkismet\Helpers\Data;
 use AltDesign\AltAkismet\Helpers\HandleSubmission;
-use Statamic\Fields\BlueprintRepository as Blueprint;
+use Statamic\Fields\BlueprintRepository;
 use Statamic\Facades\File;
 use Statamic\Facades\YAML;
 
@@ -28,7 +28,7 @@ class AltAkismetController {
         $values = $data->all();
 
         // Get a blueprint.
-        $blueprint = with(new Blueprint)->setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
+        $blueprint = with(new BlueprintRepository)->setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
 
         // Get a Fields object
         $fields = $blueprint->fields();
@@ -53,7 +53,7 @@ class AltAkismetController {
         $values = $data;
 
         // Get a blueprint.
-        $blueprint = with(new Blueprint)->setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
+        $blueprint = with(new BlueprintRepository)->setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
 
         // Get a Fields object
         $fields = $blueprint->fields();
