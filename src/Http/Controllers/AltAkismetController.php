@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use AltDesign\AltAkismet\Helpers\Data;
 use AltDesign\AltAkismet\Helpers\HandleSubmission;
-use Statamic\Facades\Blueprint;
+use Statamic\Fields\BlueprintRepository as Blueprint;
 use Statamic\Facades\File;
 use Statamic\Facades\YAML;
 
