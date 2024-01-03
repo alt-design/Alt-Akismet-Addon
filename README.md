@@ -19,3 +19,25 @@ composer require alt-design/alt-akismet
 ## How to Use
 
 Once you've got this puppy installed, add `ALT_AKISMET_API_KEY` to your `.env` file, pop your key in, off you go!
+
+## Questions etc
+
+Drop us a big shout-out if you have any questions, comments, or concerns. We're always looking to improve our addons, so if you have any feature requests, we'd love to hear them.
+
+Also - check out our other addons!
+- [Alt SEO Addon](https://github.com/alt-design/Alt-SEO-Addon)
+- [Alt Redirect Addon](https://github.com/alt-design/Alt-Redirect-Addon)
+- [Alt Sitemap Addon](https://github.com/alt-design/Alt-Sitemap-Addon)
+- [Alt Akismet Addon](https://github.com/alt-design/Alt-Akismet-Addon)
+- [Alt Password Protect Addon](https://github.com/alt-design/Alt-Password-Protect-Addon)
+
+## Postcardware
+
+Send us a postcard from your hometown if you like this addon. We love getting mail from other cool peeps!
+
+Alt Design  
+278 Uttoxeter New Rd  
+Derby  
+DE22 3LN  
+UK  
+
