@@ -28,7 +28,7 @@ class AltAkismetController {
         $values = $data->all();
 
         // Get a blueprint.
-        $blueprint = Blueprint::setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
+        $blueprint = with(new Blueprint)->setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
 
         // Get a Fields object
         $fields = $blueprint->fields();
@@ -53,7 +53,7 @@ class AltAkismetController {
         $values = $data;
 
         // Get a blueprint.
-        $blueprint = Blueprint::setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
+        $blueprint = with(new Blueprint)->setDirectory(__DIR__ . '/../../../resources/blueprints')->find('akismet');
 
         // Get a Fields object
         $fields = $blueprint->fields();
