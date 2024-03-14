@@ -3,6 +3,7 @@
 namespace AltDesign\AltAkismet;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Cache;
 
 use Statamic\Providers\AddonServiceProvider;
 
@@ -49,42 +50,45 @@ class ServiceProvider extends AddonServiceProvider
 
     // Authenticates your Akismet API key
     function akismet_verify_key( $key ) {
+        // Deal with dodgy requests
         if(!isset($_SERVER['HTTP_HOST'])) {
             return false;
         }
 
-        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-        $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'];
-        $blog = urlencode($baseUrl);
-        $request = 'key='. $key .'&blog='. $blog;
-        $host = $http_host = 'rest.akismet.com';
-        $path = '/1.1/verify-key';
-        $port = 443;
-        $akismet_ua = "WordPress/4.4.1 | Akismet/3.1.7";
-        $content_length = strlen( $request );
-        $http_request  = "POST $path HTTP/1.0\r\n";
-        $http_request .= "Host: $host\r\n";
-        $http_request .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $http_request .= "Content-Length: {$content_length}\r\n";
-        $http_request .= "User-Agent: {$akismet_ua}\r\n";
-        $http_request .= "\r\n";
-        $http_request .= $request;
-        $response = '';
+        return Cache::remember('alt_is_valid_akismet', 60 * 60 * 24, function() use($key) {
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+            $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'];
+            $blog = urlencode($baseUrl);
+            $request = 'key='. $key .'&blog='. $blog;
+            $host = $http_host = 'rest.akismet.com';
+            $path = '/1.1/verify-key';
+            $port = 443;
+            $akismet_ua = "WordPress/4.4.1 | Akismet/3.1.7";
+            $content_length = strlen( $request );
+            $http_request  = "POST $path HTTP/1.0\r\n";
+            $http_request .= "Host: $host\r\n";
+            $http_request .= "Content-Type: application/x-www-form-urlencoded\r\n";
+            $http_request .= "Content-Length: {$content_length}\r\n";
+            $http_request .= "User-Agent: {$akismet_ua}\r\n";
+            $http_request .= "\r\n";
+            $http_request .= $request;
+            $response = '';
 
-        if( false != ( $fs = @fsockopen( 'ssl://' . $http_host, $port, $errno, $errstr, 10 ) ) ) {
-            fwrite( $fs, $http_request );
-            while( !feof( $fs ) ) {
-                $response .= fgets( $fs, 1160 ); // One TCP-IP packet
+            if( false != ( $fs = @fsockopen( 'ssl://' . $http_host, $port, $errno, $errstr, 10 ) ) ) {
+                fwrite( $fs, $http_request );
+                while( !feof( $fs ) ) {
+                    $response .= fgets( $fs, 1160 ); // One TCP-IP packet
+                }
+                fclose( $fs );
+                $response = explode( "\r\n\r\n", $response, 2 );
             }
-            fclose( $fs );
-            $response = explode( "\r\n\r\n", $response, 2 );
-        }
 
-        if ( 'valid' == $response[1] ) {
-            return true;
-        } else {
-            return false;
-        }
+            if ( 'valid' == $response[1] ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     public function bootAddon()
