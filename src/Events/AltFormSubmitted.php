@@ -73,6 +73,9 @@ class AltFormSubmitted
 
         // Loop through, looking for the @ symbol and domain?
         foreach($data as $item) {
+            if(is_array($item)) {
+                continue;
+            }
             if (strpos($item, '@') !== false && strpos($item, '.') !== false) {
                 $email = $item;
                 break;
