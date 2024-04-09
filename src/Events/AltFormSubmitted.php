@@ -6,12 +6,12 @@ use AltDesign\AltAkismet\Helpers\HandleSubmission;
 class AltFormSubmitted
 {
     protected $events = [
-        Events\FormSubmitted::class => 'commentCheck',
+        Events\SubmissionCreated::class => 'commentCheck',
     ];
 
     public function subscribe($events)
     {
-        $events->listen(Events\FormSubmitted::class, self::class . '@' . 'commentCheck');
+        $events->listen(Events\SubmissionCreated::class, self::class . '@' . 'commentCheck');
     }
 
     /**
