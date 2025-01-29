@@ -24,13 +24,17 @@ Once you've got this puppy installed, add `ALT_AKISMET_API_KEY` to your `.env` f
 
 Drop us a big shout-out if you have any questions, comments, or concerns. We're always looking to improve our addons, so if you have any feature requests, we'd love to hear them.
 
-Also - check out our other addons!
+### Starter Kits
+- [Alt Starter Kit](https://statamic.com/starter-kits/alt-design/alt-starter-kit) 
+
+### Addons
 - [Alt Cookies Addon](https://github.com/alt-design/Alt-Cookies-Addon)
 - [Alt SEO Addon](https://github.com/alt-design/Alt-SEO-Addon)
 - [Alt Redirect Addon](https://github.com/alt-design/Alt-Redirect-Addon)
 - [Alt Inbound Addon](https://github.com/alt-design/Alt-Inbound-Addon)
 - [Alt Sitemap Addon](https://github.com/alt-design/Alt-Sitemap-Addon)
 - [Alt Password Protect Addon](https://github.com/alt-design/Alt-Password-Protect-Addon)
+- [Alt Google 2FA Addon](https://github.com/alt-design/Alt-Google-2fa-Addon)
 
 ## Postcardware
 
