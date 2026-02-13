@@ -23,7 +23,16 @@ class HandleSubmission
     public static function moveSubmissionToAltAkismet($submission, $type)
     {
         $manager = new Manager();
-        $manager->disk()->put('content/alt-akismet/'.$submission->id().'.yaml', Yaml::dump($submission->data()->toArray()));
+        $id = $submission->id ?? $submission->id();
+        $data = array_merge($submission->data()->toArray(), [
+            'alt_akismet_id' => $id,
+            'alt_akismet' => $submission->alt_akismet ?? $type,
+            'alt_akismet_name' => $submission->alt_akismet_name ?? '',
+            'alt_akismet_email' => $submission->alt_akismet_email ?? '',
+            'alt_akismet_content' => $submission->alt_akismet_content ?? '',
+            'alt_form_slug' => $submission->alt_form_slug ?? $submission->form()->handle(),
+        ]);
+        $manager->disk()->put('content/alt-akismet/'.$id.'.yaml', Yaml::dump($data));
     }
 
     public static function updateSubmissionInAltAkismet($id, $type)

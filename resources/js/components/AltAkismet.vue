@@ -1,12 +1,10 @@
 <template>
     <div id="alt-akismet">
-
-    <publish-form
-        :title="title"
-        :action="action"
+    <PublishContainer
+        v-model="formValues"
+        :blueprint="blueprint"
         :meta="meta"
-        :values="values"
-    ></publish-form>
+    />
 
     <p class="mb-6 -mt-2 text-sm">
         We basically try and guess which fields are which, so that you don't have to manually config each field. Below are the contents of the fields that we guessed, and the ham or spam result - we'll add a way of customising them too soon!
@@ -37,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in itemsSliced" :key="item.id">
+            <tr v-for="item in itemsSliced" :key="item.alt_akismet_id">
                 <td>
                     {{ item.alt_akismet_name }}
                 </td>
@@ -116,7 +114,10 @@
 </template>
 
 <script>
-export default({
+import { PublishContainer } from '@statamic/cms/ui';
+
+export default {
+    components: { PublishContainer },
     props: {
         title: String,
         action: String,
@@ -134,6 +135,7 @@ export default({
     },
     data() {
         return {
+            formValues: this.values != null ? (Array.isArray(this.values) ? [...this.values] : { ...this.values }) : {},
             itemsReady: [],
             itemsSliced: [],
             perPage: 10,
@@ -165,8 +167,8 @@ export default({
             this.itemsSliced = this.itemsReady.slice(start, end)
         },
         update(id, type) {
-            console.log(id, type)
-            if (confirm('Are you sure you want to report this as ham?')) {
+            const message = type === 'ham' ? 'Are you sure you want to mark this as ham (not spam)?' : 'Are you sure you want to report this as spam?';
+            if (confirm(message)) {
                 Statamic.$axios.post(cp_url('alt-design/alt-akismet/update'), {
                     id: id,
                     type: type,
@@ -182,5 +184,6 @@ export default({
             }
         },
     }
-})
+}
+}
 </script>
