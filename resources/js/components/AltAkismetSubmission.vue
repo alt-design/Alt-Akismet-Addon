@@ -1,5 +1,6 @@
 <script setup>
 import { Header, PublishContainer } from '@statamic/cms/ui';
+import { ref } from 'vue';
 
 const props = defineProps({
     blueprint: Array,
@@ -9,7 +10,7 @@ const props = defineProps({
     items: Array,
 });
 
-const formValues = (props.values != null ? (Array.isArray(props.values) ? [...props.values] : { ...props.values }) : {});
+const formValues = ref(props.values != null ? (Array.isArray(props.values) ? [...props.values] : { ...props.values }) : {});
 </script>
 
 <template>

@@ -1,12 +1,17 @@
 {
   "resources/css/alt-akismet-addon.css": {
-    "file": "assets/alt-akismet-addon-4ed993c7.js",
+    "file": "assets/alt-akismet-addon-tn0RQdqM.css",
+    "src": "resources/css/alt-akismet-addon.css",
     "isEntry": true,
-    "src": "resources/css/alt-akismet-addon.css"
+    "name": "alt-akismet-addon",
+    "names": [
+      "alt-akismet-addon.css"
+    ]
   },
   "resources/js/alt-akismet-addon.js": {
-    "file": "assets/alt-akismet-addon-fbe42098.js",
-    "isEntry": true,
-    "src": "resources/js/alt-akismet-addon.js"
+    "file": "assets/alt-akismet-addon-DhpCA9Cs.js",
+    "name": "alt-akismet-addon",
+    "src": "resources/js/alt-akismet-addon.js",
+    "isEntry": true
   }
 }
