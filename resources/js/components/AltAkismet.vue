@@ -10,7 +10,7 @@ const props = defineProps({
     items: Array,
 });
 
-const perPage = 2;
+const perPage = 10;
 const currentPage = ref(1);
 
 const lastPage = computed(() => {

@@ -3,12 +3,8 @@
 namespace AltDesign\AltAkismet;
 
 use AltDesign\AltAkismet\Events\AltFormSubmitted;
-use Facades\Statamic\Version;
-
 use Illuminate\Support\Facades\Cache;
-
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Str;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
