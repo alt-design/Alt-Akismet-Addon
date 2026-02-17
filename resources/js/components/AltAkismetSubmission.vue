@@ -1,37 +1,28 @@
+<script setup>
+import { Header, PublishContainer } from '@statamic/cms/ui';
+
+const props = defineProps({
+    blueprint: Array,
+    meta: Array,
+    values: Array,
+    data: Array,
+    items: Array,
+});
+
+const formValues = (props.values != null ? (Array.isArray(props.values) ? [...props.values] : { ...props.values }) : {});
+</script>
+
 <template>
-    <div>
-        <PublishContainer
-            v-model="formValues"
-            :blueprint="blueprint"
-            :meta="meta"
-            :read-only="true"
-        />
+    <div id="alt-akismet">
+        <Header :title="title">
+            <template #title>
+                <div>
+                    Alt Akismet
+                    <div class="text-sm">We basically try and guess which fields are which, so that you don't have to manually config each field. Below are the contents of the fields that we guessed, and the ham or spam result - we'll add a way of customising them too soon!</div>
+                </div>
+            </template>
+        </Header>
+
+        <PublishContainer :blueprint="blueprint" :meta="meta" v-model="formValues" :read-only="true" />
     </div>
 </template>
-
-<script>
-import { PublishContainer } from '@statamic/cms/ui';
-
-export default {
-    components: { PublishContainer },
-    props: {
-        blueprint: {
-            type: [Array, Object],
-            required: true,
-        },
-        meta: {
-            type: [Array, Object],
-            default: () => ({}),
-        },
-        values: {
-            type: [Array, Object],
-            default: () => ({}),
-        },
-    },
-    data() {
-        return {
-            formValues: this.values != null ? (Array.isArray(this.values) ? [...this.values] : { ...this.values }) : {},
-        };
-    },
-};
-</script>

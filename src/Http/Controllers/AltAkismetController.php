@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use AltDesign\AltAkismet\Helpers\Data;
 use AltDesign\AltAkismet\Helpers\HandleSubmission;
+use Inertia\Inertia;
 use Statamic\Fields\BlueprintRepository;
 use Statamic\Facades\File;
 use Statamic\Facades\YAML;
@@ -37,11 +38,11 @@ class AltAkismetController {
         // Pre-process the values.
         $fields = $fields->preProcess();
 
-        return view('alt-akismet::index', [
+        return Inertia::render('alt-akismet::Index', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
-            'data'      => $values,
+            'items'      => $values,
         ]);
     }
 
@@ -62,7 +63,7 @@ class AltAkismetController {
         // Pre-process the values.
         $fields = $fields->preProcess();
 
-        return view('alt-akismet::submission', [
+        return Inertia::render('alt-akismet::Show', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
@@ -70,11 +71,14 @@ class AltAkismetController {
         ]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $type = $request->type;
         $id = $request->id;
 
         $formSubmission = new HandleSubmission();
         $formSubmission->updateSubmissionInAltAkismet($id, $type);
+
+        return redirect()->back();
     }
 }

@@ -2,14 +2,16 @@
 
 namespace AltDesign\AltAkismet;
 
-use Illuminate\Support\Facades\Event;
+use AltDesign\AltAkismet\Events\AltFormSubmitted;
+use Facades\Statamic\Version;
+
 use Illuminate\Support\Facades\Cache;
 
-use Statamic\Providers\AddonServiceProvider;
-
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
-use AltDesign\AltAkismet\Events\AltFormSubmitted;
+use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -97,5 +99,11 @@ class ServiceProvider extends AddonServiceProvider
         $this->addToNav();
         $this->registerPermissions();
         $this->registerEvents();
+
+        // Statamic >= V6 - unbind the settings blueprint to remove the default settings page and permissions 
+        // as we are handling this manually instead
+        if(intval(Str::before(Version::get(), '.')) >= 6) {
+            app()->offsetUnset("statamic.addons.alt-inbound.settings_blueprint");
+        }
     }
 }
