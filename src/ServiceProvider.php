@@ -2,14 +2,12 @@
 
 namespace AltDesign\AltAkismet;
 
-use Illuminate\Support\Facades\Event;
+use AltDesign\AltAkismet\Events\AltFormSubmitted;
 use Illuminate\Support\Facades\Cache;
-
-use Statamic\Providers\AddonServiceProvider;
-
+use Illuminate\Support\Facades\Event;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
-use AltDesign\AltAkismet\Events\AltFormSubmitted;
+use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {

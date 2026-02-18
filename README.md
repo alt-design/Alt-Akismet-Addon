@@ -2,6 +2,8 @@
 
 > Akismet Integration for Statamic!
 
+**Compatibility:** This addon supports Statamic 6.x (PHP 8.3+, Laravel 12+). For older Statamic versions use a previous release.
+
 ## Features
 
 This addon lets you integrate Akismet into your Statamic forms. We've tried to put some guesswork into working out which fields are which to try and minimise the amount of config required on forms.
