@@ -135,9 +135,9 @@ class AltFormSubmitted
         $data = array(
             'blog' => $blog, // Required
             'user_ip' => $_SERVER['REMOTE_ADDR'], // Required
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-            'referrer' => $_SERVER['HTTP_REFERER'],
-            'permalink' => $_SERVER['HTTP_ORIGIN'],
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+            'referrer' => $_SERVER['HTTP_REFERER'] ?? '',
+            'permalink' => $_SERVER['HTTP_ORIGIN'] ?? '',
             'comment_type' => 'contact-form',
             'comment_author' => $this->attemptGetName($data),
             'comment_author_email' => $this->attemptGetEmail($data),
@@ -190,7 +190,7 @@ class AltFormSubmitted
         $submission->id = uniqid();
 
         //add the comment check result.
-        $submission->alt_akismet = $response[1] == "true" ? "spam" : "ham";
+        $submission->alt_akismet = ($response[1] ?? '') == "true" ? "spam" : "ham";
 
         // Add what we assumed the name, email and content to be, as this is what we checked.
         $submission->alt_akismet_name = $data['comment_author'];
